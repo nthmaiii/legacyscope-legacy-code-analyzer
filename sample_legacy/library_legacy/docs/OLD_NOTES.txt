@@ -1,0 +1,11 @@
+GHI CHÚ BÀN GIAO (2019)
+
+- Module mượn/trả đang tính tiền phạt theo công thức cũ: 5.000đ/ngày quá hạn.
+- Không được xóa sách nếu còn phiếu mượn chưa trả.
+- Tài khoản thủ thư mặc định: admin/admin123 (cần đổi trước khi triển khai).
+- Một số màn hình JSP còn dùng scriptlet, không chuyển sang JSTL được vì thiếu thời gian.
+- Luồng đăng nhập chưa phân quyền đầy đủ; filter chỉ kiểm tra session.
+- Cần bổ sung báo cáo thống kê sách quá hạn trước quý 4.
+
+TODO: tách lớp xử lý ngày tháng, hiện tại mỗi nơi tự parse.
+FIXME: câu SQL tìm kiếm đang nối chuỗi trực tiếp.

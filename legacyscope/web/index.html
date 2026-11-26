@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegacyScope · Phân tích mã nguồn cũ</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">LS</div>
+        <div>
+          <div class="brand-name">LegacyScope</div>
+          <div class="brand-sub">Code archaeology</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-item active" href="#" data-nav="upload">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          Phân tích mới
+        </a>
+        <a class="nav-item" href="#samples" data-nav="samples">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5 12 3l8 4.5-8 4.5-8-4.5Zm0 5L12 17l8-4.5M4 17l8 4.5 8-4.5"/></svg>
+          Mẫu mã nguồn
+        </a>
+        <a class="nav-item" href="#guide" data-nav="guide">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Zm0 15A2.5 2.5 0 0 1 6.5 18H20"/></svg>
+          Hướng dẫn
+        </a>
+      </nav>
+
+      <div class="sidebar-note">
+        <div class="note-icon">◎</div>
+        <div>
+          <strong>Offline &amp; rule-based</strong>
+          <p>Không gửi mã nguồn ra ngoài. Kết quả giải thích được.</p>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        <span>LegacyScope 1.0</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu" id="menuButton" aria-label="Mở menu">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <div>
+            <div class="eyebrow">Legacy code intelligence</div>
+            <h1 id="pageTitle">Phân tích mã nguồn cũ</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span class="pill"><span class="live-dot"></span> Local · Offline</span>
+          <a class="ghost-link" href="#guide">Tài liệu</a>
+        </div>
+      </header>
+
+      <section class="view" id="uploadView">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="hero-kicker">Tự động hóa tái tạo tài liệu</div>
+            <h2>Biến mã nguồn cũ thành <span>tài liệu kiến trúc</span> có thể bảo trì.</h2>
+            <p class="hero-desc">
+              LegacyScope quét mã nguồn Java và SQL, phục hồi lớp, API, quan hệ dữ liệu,
+              quy tắc nghiệp vụ và sinh đặc tả kỹ thuật chỉ trong vài giây.
+            </p>
+            <div class="feature-row">
+              <div class="feature"><span>01</span> AST &amp; annotation</div>
+              <div class="feature"><span>02</span> Kiến trúc phân tầng</div>
+              <div class="feature"><span>03</span> Word / Markdown</div>
+            </div>
+          </div>
+
+          <div class="upload-card">
+            <div class="upload-head">
+              <div>
+                <h3>Bắt đầu phân tích</h3>
+                <p>Chọn mã nguồn mẫu hoặc tải lên gói ZIP.</p>
+              </div>
+              <div class="file-badge">ZIP · ≤ 30 MB</div>
+            </div>
+            <div class="dropzone" id="dropzone" tabindex="0">
+              <input type="file" id="fileInput" accept=".zip" hidden>
+              <div class="drop-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0 4 4m-4-4L8 8M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>
+              </div>
+              <strong id="dropTitle">Kéo thả tệp ZIP vào đây</strong>
+              <span id="dropHint">hoặc bấm để chọn từ máy tính</span>
+            </div>
+            <button class="primary-button" id="uploadButton">
+              <span>Phân tích mã nguồn tải lên</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            </button>
+            <div class="upload-foot">
+              <span>Không cần đăng nhập</span>
+              <span>Kết quả lưu cục bộ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head" id="samples">
+          <div>
+            <div class="eyebrow">Bộ dữ liệu mẫu</div>
+            <h3>Mã nguồn legacy có sẵn</h3>
+          </div>
+          <span class="section-note">Chọn một mẫu để chạy demo ngay</span>
+        </div>
+        <div class="sample-grid" id="sampleGrid">
+          <div class="sample-card skeleton"></div>
+        </div>
+
+        <div class="guide-card" id="guide">
+          <div class="guide-head">
+            <div>
+              <div class="eyebrow">Quy trình</div>
+              <h3>Ba bước để có đặc tả kỹ thuật</h3>
+            </div>
+            <span class="pill subtle">Khoảng 3–6 giây</span>
+          </div>
+          <div class="guide-steps">
+            <div class="guide-step">
+              <div class="step-number">1</div>
+              <h4>Chọn mã nguồn</h4>
+              <p>Upload ZIP hoặc dùng bộ mẫu Java Servlet + JDBC + SQL.</p>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">2</div>
+              <h4>Phục hồi cấu trúc</h4>
+              <p>Quét lớp, phương thức, API, phụ thuộc, bảng và quy tắc nghiệp vụ.</p>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">3</div>
+              <h4>Tải tài liệu</h4>
+              <p>Xem dashboard, sơ đồ kiến trúc và tải Word, Markdown, JSON.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view loading-view hidden" id="loadingView">
+        <div class="loading-card">
+          <div class="loader-ring"><span></span></div>
+          <div class="eyebrow">Đang xử lý</div>
+          <h2>Phục hồi kiến trúc từ mã nguồn</h2>
+          <p class="loading-project" id="loadingProject">Đang chuẩn bị dữ liệu…</p>
+          <div class="loading-steps" id="loadingSteps">
+            <div class="loading-step" data-step="0"><span></span><div><strong>Quét cấu trúc thư mục</strong><small>Nhận diện ngôn ngữ, LOC, comment, TODO</small></div></div>
+            <div class="loading-step" data-step="1"><span></span><div><strong>Phân tích cú pháp Java</strong><small>Lớp, phương thức, annotation, endpoint</small></div></div>
+            <div class="loading-step" data-step="2"><span></span><div><strong>Trích xuất SQL &amp; quan hệ</strong><small>Bảng, khóa chính, khóa ngoại, quy tắc</small></div></div>
+            <div class="loading-step" data-step="3"><span></span><div><strong>Dựng sơ đồ kiến trúc</strong><small>Phân tầng, phụ thuộc, class, ERD, luồng API</small></div></div>
+            <div class="loading-step" data-step="4"><span></span><div><strong>Sinh đặc tả kỹ thuật</strong><small>Word, Markdown, JSON và gói kết quả</small></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view hidden" id="resultView">
+        <div class="result-head">
+          <div class="result-title">
+            <div class="eyebrow" id="resultEyebrow">Kết quả phân tích</div>
+            <h2 id="resultProject">Hệ thống Quản lý Thư viện</h2>
+            <p id="resultMeta">Đang tải thông tin…</p>
+          </div>
+          <div class="result-actions">
+            <a class="secondary-button" id="downloadPackage" href="#" download>
+              <svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></svg>
+              Gói kết quả
+            </a>
+            <a class="primary-button" id="downloadDocx" href="#" download>
+              <span>Tải báo cáo Word</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="score-banner">
+          <div class="score-ring" id="scoreRing">
+            <div class="score-inner">
+              <strong id="scoreValue">75</strong>
+              <span>/ 100</span>
+            </div>
+          </div>
+          <div class="score-copy">
+            <div class="eyebrow">Chỉ số rủi ro mã nguồn cũ</div>
+            <h3 id="scoreGrade">Rủi ro cao</h3>
+            <p id="scoreHint">Cần ưu tiên xử lý bảo mật và bổ sung kiểm thử hồi quy.</p>
+          </div>
+          <div class="score-facts">
+            <div><strong id="factFindings">8</strong><span>vấn đề</span></div>
+            <div><strong id="factRules">28</strong><span>quy tắc</span></div>
+            <div><strong id="factLayers">5</strong><span>tầng</span></div>
+          </div>
+        </div>
+
+        <div class="stat-grid" id="statGrid"></div>
+
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-tab="overview">Tổng quan</button>
+          <button class="tab" data-tab="architecture">Kiến trúc</button>
+          <button class="tab" data-tab="classes">Lớp &amp; API</button>
+          <button class="tab" data-tab="data">Dữ liệu</button>
+          <button class="tab" data-tab="spec">Đặc tả</button>
+          <button class="tab" data-tab="issues">Vấn đề</button>
+        </div>
+
+        <div class="tab-panel" data-panel="overview">
+          <div class="split-grid">
+            <div class="panel-card figure-card">
+              <div class="card-head"><h3>Chất lượng mã nguồn</h3><span class="pill subtle">Tự động</span></div>
+              <img id="qualityImage" alt="Bảng điều khiển chất lượng">
+            </div>
+            <div class="panel-card">
+              <div class="card-head"><h3>Tóm tắt phục hồi</h3></div>
+              <p class="summary-text" id="overviewSummary"></p>
+              <div class="stack-list" id="overviewRecommendations"></div>
+            </div>
+          </div>
+          <div class="panel-card">
+            <div class="card-head"><h3>Phát hiện nổi bật</h3><span class="pill" id="overviewFindingCount">0 vấn đề</span></div>
+            <div class="table-wrap"><table class="data-table" id="overviewFindings"></table></div>
+          </div>
+        </div>
+
+        <div class="tab-panel hidden" data-panel="architecture">
+          <div class="panel-card figure-card">
+            <div class="card-head"><h3>Kiến trúc phân tầng</h3><span class="pill subtle">Recovered</span></div>
+            <img id="architectureImage" alt="Sơ đồ kiến trúc phân tầng">
+          </div>
+          <div class="split-grid">
+            <div class="panel-card figure-card">
+              <div class="card-head"><h3>Phụ thuộc giữa các tầng</h3></div>
+              <img id="dependencyImage" alt="Bản đồ phụ thuộc">
+            </div>
+            <div class="panel-card">
+              <div class="card-head"><h3>Phân bố theo tầng</h3></div>
+              <div class="table-wrap"><table class="data-table" id="layerTable"></table></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel hidden" data-panel="classes">
+          <div class="panel-card figure-card">
+            <div class="card-head"><h3>Sơ đồ lớp rút gọn</h3><span class="pill subtle">19 lớp</span></div>
+            <img id="classImage" alt="Sơ đồ lớp">
+          </div>
+          <div class="split-grid">
+            <div class="panel-card">
+              <div class="card-head">
+                <h3>Danh mục lớp</h3>
+                <input class="search-input" id="classSearch" placeholder="Tìm lớp, tầng, tệp…">
+              </div>
+              <div class="table-wrap tall"><table class="data-table" id="classTable"></table></div>
+            </div>
+            <div class="panel-card">
+              <div class="card-head">
+                <h3>Endpoint</h3>
+                <input class="search-input" id="apiSearch" placeholder="Tìm API, handler…">
+              </div>
+              <div class="table-wrap tall"><table class="data-table" id="apiTable"></table></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel hidden" data-panel="data">
+          <div class="panel-card figure-card">
+            <div class="card-head"><h3>Mô hình dữ liệu quan hệ</h3><span class="pill subtle">ERD</span></div>
+            <img id="erdImage" alt="Sơ đồ ERD">
+          </div>
+          <div class="split-grid">
+            <div class="panel-card">
+              <div class="card-head"><h3>Bảng dữ liệu</h3></div>
+              <div class="table-wrap"><table class="data-table" id="tableList"></table></div>
+            </div>
+            <div class="panel-card">
+              <div class="card-head"><h3>Quy tắc nghiệp vụ</h3><span class="pill" id="ruleCount">0</span></div>
+              <div class="table-wrap tall"><table class="data-table" id="ruleTable"></table></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel hidden" data-panel="spec">
+          <div class="spec-grid" id="artifactGrid"></div>
+          <div class="split-grid">
+            <div class="panel-card">
+              <div class="card-head"><h3>Cấu trúc đặc tả</h3></div>
+              <div class="stack-list" id="specContents"></div>
+            </div>
+            <div class="panel-card">
+              <div class="card-head"><h3>Thông tin sinh tài liệu</h3></div>
+              <div class="meta-list" id="specMeta"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel hidden" data-panel="issues">
+          <div class="panel-card">
+            <div class="card-head">
+              <h3>Danh sách vấn đề</h3>
+              <input class="search-input" id="issueSearch" placeholder="Tìm theo mức độ, nhóm, tệp…">
+            </div>
+            <div class="table-wrap"><table class="data-table" id="issueTable"></table></div>
+          </div>
+        </div>
+
+        <div class="result-footer">
+          <button class="ghost-button" id="newAnalysisButton">← Phân tích mã nguồn khác</button>
+          <span>LegacyScope · Kết quả được lưu trong thư mục outputs</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
